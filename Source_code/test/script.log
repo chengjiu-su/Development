@@ -1,0 +1,13 @@
+++++++++++++++++++++++++++++
+将 测试9527_1服 调至 group[9] 组成功,服务已对外
+{"errcode":0,"errmsg":"ok"}
+2021-01-08 17:20:00
+++++++++++++++++++++++++++++
+Traceback (most recent call last):
+  File "/home/chengjiu_su/PycharmProjects/automatic/open_server.py", line 80, in <module>
+    while not ticker.wait(WAIT_TIME_SECONDS):
+  File "/usr/local/lib/python3.6/threading.py", line 551, in wait
+    signaled = self._cond.wait(timeout)
+  File "/usr/local/lib/python3.6/threading.py", line 299, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt

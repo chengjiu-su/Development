@@ -1,0 +1,103 @@
+#server-config.properties
+acg = """#服务器物理机唯一ID
+id=1
+#服务器公网IP
+ip=127.0.0.1
+#服务器类型[SHARE|GAME]
+type=GAME
+#运行模式[RELEASE|DEBUG|MEMORY]
+mode=DEBUG
+#游戏端口
+game_port=16889
+#服务器管理器地址
+leader_host=127.0.0.1
+#服务器管理器端口
+leader_port=8889
+#后台端口
+backend_port=9002
+#资源http url路径
+res_url=res
+#数据库用户名
+db_usr=game
+#数据库密码
+db_pwd=game
+#游戏库url
+db_game_url=jdbc:mysql://127.0.0.1:3306/game_data_h5?autoReconnect=true&characterEncoding=UTF-8
+#聊天日志(0关闭 1开启)
+chat_monitor=1
+# 是否开放充值 true or false
+open_recharge=true
+"""
+#servers.info
+acg2 = """#服务器配置
+#server 服务器ID
+#platform 平台名称
+#open 开服时间
+#join 合服时间
+#sub 加入的合并服(37wan:4|360:1)
+0={"server":33,"platform":"37wan","open":"2020-02-12 10:00:00","join":"2099-08-30 15:00:00","sub":""}
+1={"server":34,"platform":"37wan","open":"2020-02-12 10:00:00","join":"2099-08-30 15:00:00","sub":""}
+"""
+
+import sys
+import os
+
+process_path = sys.argv[1]
+
+def checkout():
+    os.system(
+        'svn checkout svn://svn.popcornie.com/server/b/release-stable-23you/game   --username script --password fdasf43tg453h534h543 --no-auth-cache --force /data/game/b/%s '
+        % (process_path)
+    )
+def mkdir(path):
+    # 去除首位空格
+    path = path.strip()
+    # 判断路径是否存在
+    # 存在     True
+    # 不存在   False
+    isExists = os.path.exists(path)
+
+    # 判断结果
+    if not isExists:
+        # 如果不存在则创建目录
+        # 创建目录操作函数
+        print('目录创建成功,开始执行svn检出')
+        os.makedirs(path)
+        return True
+    else:
+        # 如果目录存在则不创建，并提示目录已存在
+        print('目录已存在,开始svn检出')
+        return False
+
+# 定义要创建的目录
+mkpath = "/data/game/b/%s" % (process_path)
+# 调用函数
+mkdir(mkpath)
+checkout()
+#server-confing.properties
+acg_new = acg.replace("id=1", "id=9527").\
+    replace("ip=127.0.0.1", "ip=192.168.7.101").\
+    replace("mode=DEBUG", "mode=RELEASE").\
+    replace("game_port=16889", "game_port=10001").\
+    replace("backend_port=9002", "backend_port=10002").\
+    replace("db_usr=game","db_usr=ltnz").\
+    replace("db_pwd=game","db_pwd=ltnz").\
+    replace("3306/game_data_h5","3306/game_ytsc_9527")
+#servers.info
+acg2_new = acg2.replace("1=","#1=").\
+      replace("33","9527").\
+      replace("37wan","sj").\
+      replace("2020-02-12 10:00:00","2021-01-04 00:00:00")
+
+#路径合成 os.path.join
+prc_path1 = os.path.join("/data/", "game", "b", "%s", "server-config.properties")  % process_path
+prc_path2 = os.path.join("/data/", "game", "b", "%s", "servers.info") % process_path
+#打开文件写入
+f1 = open(prc_path1,'w+')
+f2 = open(prc_path2,'w+')
+
+#将输出写入文件
+print(acg_new,file=f1)
+print(acg2_new,file=f2)
+f1.close()
+f2.close()

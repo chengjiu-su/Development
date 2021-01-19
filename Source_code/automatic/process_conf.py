@@ -1,0 +1,64 @@
+import sys
+import os
+
+process_path = sys.argv[1]
+def checkout():
+    os.system(
+        'svn checkout svn://svn.popcornie.com/server/b/release-stable-23you/game   --username script --password fdasf43tg453h534h543 --no-auth-cache --force /data/game/b/%s '
+        % (process_path)
+    )
+def mkdir(path):
+    # 去除首位空格
+    path = path.strip()
+    # 判断路径是否存在
+    # 存在     True
+    # 不存在   False
+    isExists = os.path.exists(path)
+
+    # 判断结果
+    if not isExists:
+        # 如果不存在则创建目录
+        # 创建目录操作函数
+        # print('目录创建成功,开始执行svn检出')
+        os.makedirs(path)
+        return True
+    else:
+        # 如果目录存在则不创建，并提示目录已存在
+        # print('目录已存在,开始svn检出')
+        return False
+
+# 定义要创建的目录
+mkpath = "/data/game/b/%s" % (process_path)
+# 调用函数
+mkdir(mkpath)
+checkout()
+prc_path1 = os.path.join("/data/", "game", "b", "%s", "server-config.properties")  % process_path
+prc_path2 = os.path.join("/data/", "game", "b", "%s", "servers.info")  % process_path
+
+with open(prc_path1, 'r') as file1 :
+  filedata1 = file1.read()
+with open(prc_path2, 'r') as file2 :
+    filedata2 = file2.read()
+
+# Replace the target string
+# filedata = filedata.replace('"37wan', '9527_new').replace("2020-02-12 10:00:00","2021 01-06 00:00:00")
+filedata1 = filedata1.replace("id=1", "id=9527").\
+    replace("ip=127.0.0.1", "ip=192.168.7.101").\
+    replace("mode=DEBUG", "mode=RELEASE").\
+    replace("game_port=16889", "game_port=10001").\
+    replace("backend_port=9002", "backend_port=10002").\
+    replace("db_usr=game","db_usr=ltnz").\
+    replace("db_pwd=game","db_pwd=ltnz").\
+    replace("3306/game_data_h5","3306/game_ytsc_9527")
+
+filedata2 = filedata2.replace("1=","#1=").\
+      replace("33","9527").\
+      replace("37wan","sj").\
+      replace("2020-02-12 10:00:00","2021-01-04 00:00:00")
+
+# Write the file out again
+
+with open(prc_path1, 'w') as file:
+  file.write(filedata1)
+with open(prc_path2, 'w') as file:
+    file.write(filedata2)
