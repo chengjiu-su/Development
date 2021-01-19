@@ -1,0 +1,4 @@
+- rufus:[下载地址](http://rufus.ie/)
+- 微pe:[下载地址](http://www.wepe.com.cn/download.html?tdsourcetag=s_pcqq_aiomsg)
+- 优启通[下载地址](https://www.upe.net/)
+- ventory:[下载地址](https://github.com/nventory/nventory)

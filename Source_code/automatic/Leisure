@@ -1,3 +1,0 @@
-message = " "
-if message :
-    pass
